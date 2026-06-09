@@ -17,7 +17,7 @@ from config import (
     FEATURE_COLUMNS,
 )
 
-from core.preprocessing import apply_eeg_filter
+from core.preprocessing import apply_eeg_filter, normalize_window
 from core.vmd_processor import apply_vmd
 from core.feature_extraction import extract_features_from_modes
 
@@ -60,19 +60,6 @@ def convert_input_window_to_model_fs(raw_window, input_fs):
 
 
 def predict_window_5s(raw_window, model, input_fs=256):
-    """
-    raw_window:
-        Window EEG 5 detik dari Muse real-time atau CSV replay.
-
-    input_fs:
-        Sampling rate dari input.
-        - Muse 2 biasanya 256 Hz.
-        - CSV bisa 256 Hz atau 128 Hz, tergantung file.
-
-    Return:
-        pred, prob, status, latency, modes, feats, filtered
-    """
-
     raw_window = np.asarray(raw_window, dtype=float).ravel()
 
     expected_size = int(input_fs * WINDOW_SEC)
@@ -120,7 +107,8 @@ def predict_window_5s(raw_window, model, input_fs=256):
 
     try:
         filtered = apply_eeg_filter(seg_5s, fs=MODEL_FS)
-        modes = apply_vmd(filtered, K=K)
+        normalized = normalize_window(filtered)
+        modes = apply_vmd(normalized, K=K)
         feats = extract_features_from_modes(modes, sf=MODEL_FS)
     except Exception:
         t1 = time.perf_counter()
@@ -148,4 +136,4 @@ def predict_window_5s(raw_window, model, input_fs=256):
 
     t1 = time.perf_counter()
 
-    return pred, prob, "OK", t1 - t0, modes, feats, filtered
+    return pred, prob, "OK", t1 - t0, modes, feats, normalized

@@ -26,3 +26,9 @@ def apply_eeg_filter(signal, fs=128):
     filtered = sosfiltfilt(sos_notch, filtered)
 
     return filtered
+
+def normalize_window(signal):
+    signal = np.asarray(signal, dtype=float).ravel()
+    signal = signal - np.mean(signal)
+    signal = signal / (np.std(signal) + 1e-8)
+    return signal

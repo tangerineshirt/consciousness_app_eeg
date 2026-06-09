@@ -107,13 +107,13 @@ class CSVReplayWorker(QThread):
                 if len(self.window_buffer) == window_size:
                     raw_window = np.array(self.window_buffer, dtype=float)
 
-                    pred, prob, status, latency, modes, feats, filtered = predict_window_5s(
+                    pred, prob, status, latency, modes, feats, vmd_input = predict_window_5s(
                         raw_window,
                         self.model,
                         input_fs=self.csv_fs,
                     )
 
-                    self.vmd_ready.emit(modes, feats, filtered, status, t_rel)
+                    self.vmd_ready.emit(modes, feats, vmd_input, status, t_rel)
 
                     self.vote_buffer.append((pred, prob, status, latency, t_rel))
 
