@@ -54,6 +54,8 @@ def convert_input_window_to_model_fs(raw_window, input_fs):
     # Kasus umum Muse 2: 256 Hz -> 128 Hz
     if int(input_fs) == 256 and int(MODEL_FS) == 128:
         return decimate(raw_window, 2, zero_phase=True)
+    elif int(input_fs) == 512 and int(MODEL_FS) == 128:
+        return decimate(raw_window, 4, zero_phase=True)
 
     # Untuk sampling rate lain, gunakan resample_poly
     return resample_to_model_fs(raw_window, input_fs, MODEL_FS)
@@ -97,9 +99,6 @@ def predict_window_5s(raw_window, model, input_fs=256):
                 None,
                 None,
             )
-
-    # DC offset correction
-    seg_5s = seg_5s - np.mean(seg_5s)
 
     if np.std(seg_5s) < STD_FLAT_THR:
         t1 = time.perf_counter()

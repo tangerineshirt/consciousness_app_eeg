@@ -20,6 +20,7 @@ class MuseStreamWorker(QThread):
 
     # pred, prob, status, latency, win_end_sec
     prediction_ready = pyqtSignal(object, object, str, float, float)
+    window_prediction_ready = pyqtSignal(object, object, str, float, float)
 
     # modes, features, filtered_signal, status, win_end_sec
     vmd_ready = pyqtSignal(object, object, object, str, float)
@@ -110,9 +111,17 @@ class MuseStreamWorker(QThread):
                     raw_window = np.array(self.window_buffer, dtype=float)
 
                     pred, prob, status, latency, modes, feats, vmd_input = predict_window_5s(
-                        raw_window,
-                        self.model,
-                        input_fs=MUSE_FS,
+                    raw_window,
+                    self.model,
+                    input_fs=MUSE_FS,
+                    )
+
+                    self.window_prediction_ready.emit(
+                        pred,
+                        prob,
+                        "5-second window classification",
+                        latency,
+                        t_rel,
                     )
 
                     self.vmd_ready.emit(modes, feats, vmd_input, status, t_rel)

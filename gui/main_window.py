@@ -1,4 +1,7 @@
 from collections import deque
+from datetime import datetime
+from pathlib import Path
+import csv
 
 import numpy as np
 
@@ -63,8 +66,12 @@ class MainWindow(QMainWindow):
         self.worker = None
         self.csv_path = None
 
-        self.x_data = deque(maxlen=MUSE_FS * DISPLAY_SECONDS)
-        self.y_data = deque(maxlen=MUSE_FS * DISPLAY_SECONDS)
+        self.is_muse_realtime_recording = False
+        self.realtime_raw_records = []
+        self.last_saved_raw_csv = None
+
+        self.x_data = deque()
+        self.y_data = deque()
 
         self.last_modes = None
         self.last_features = None
@@ -278,8 +285,13 @@ class MainWindow(QMainWindow):
         self.lbl_pred.setMinimumHeight(54)
         self.lbl_pred.setMaximumHeight(70)
 
+        self.lbl_window_pred = QLabel("Current 5s window: -")
+        self.lbl_window_pred.setObjectName("MetricValue")
+        self.lbl_window_pred.setAlignment(Qt.AlignCenter)
+
         panel_layout.addWidget(self.lbl_status)
         panel_layout.addWidget(self.lbl_pred)
+        panel_layout.addWidget(self.lbl_window_pred)
 
         metric_grid = QGridLayout()
         metric_grid.setHorizontalSpacing(14)
@@ -407,10 +419,37 @@ class MainWindow(QMainWindow):
 
         self.lbl_status.setText("Status: Idle")
         self.lbl_pred.setText("Waiting for data...")
+        self.lbl_window_pred.setText("Current 5s window: -")
         self.lbl_prob.setText("-")
         self.lbl_lat.setText("-")
         self.lbl_win.setText("-")
         self.lbl_vmd.setText("-")
+    
+    def save_muse_raw_csv(self):
+        if not self.is_muse_realtime_recording:
+            return None
+
+        if len(self.realtime_raw_records) == 0:
+            return None
+
+        output_dir = Path("recorded_raw")
+        output_dir.mkdir(parents=True, exist_ok=True)
+
+        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+        output_path = output_dir / f"muse2_raw_af7_{timestamp}.csv"
+
+        with open(output_path, "w", newline="", encoding="utf-8") as f:
+            writer = csv.writer(f)
+            writer.writerow(["time_sec", "AF7"])
+            writer.writerows(self.realtime_raw_records)
+
+        self.last_saved_raw_csv = str(output_path)
+        return str(output_path)
+    
+    def on_worker_finished(self):
+        self.worker = None
+        self.btn_start.setEnabled(True)
+        self.btn_stop.setEnabled(False)
 
     def start_stream(self):
         self.btn_start.setEnabled(False)
@@ -418,13 +457,19 @@ class MainWindow(QMainWindow):
 
         self.reset_display()
 
+        self.realtime_raw_records = []
+        self.last_saved_raw_csv = None
+        self.is_muse_realtime_recording = False
+
         source = self.source_combo.currentText()
 
         if source == "Muse 2 Real-Time":
             self.lbl_status.setText("Status: Starting Muse 2 stream...")
+            self.is_muse_realtime_recording = True
             self.worker = MuseStreamWorker(self.model)
 
         elif source == "CSV Replay":
+            self.is_muse_realtime_recording = False
             if not self.csv_path:
                 QMessageBox.warning(
                     self,
@@ -462,30 +507,66 @@ class MainWindow(QMainWindow):
 
         self.worker.sample_received.connect(self.on_sample_received)
         self.worker.status_changed.connect(self.on_status_changed)
+        self.worker.window_prediction_ready.connect(self.on_window_prediction_ready)
         self.worker.prediction_ready.connect(self.on_prediction_ready)
         self.worker.vmd_ready.connect(self.on_vmd_ready)
         self.worker.error_occurred.connect(self.on_error)
+        self.worker.finished.connect(self.on_worker_finished)
 
         self.worker.start()
 
     def stop_stream(self):
-        if self.worker is not None:
-            self.worker.stop()
-            self.worker.wait(2000)
-            self.worker = None
+        was_muse_realtime = self.is_muse_realtime_recording
+
+        worker = self.worker
+        self.worker = None
+
+        if worker is not None:
+            try:
+                worker.stop()
+            except Exception:
+                pass
+
+            if not worker.wait(5000):
+                print("Worker did not stop in time. Terminating thread...")
+                worker.terminate()
+                worker.wait(2000)
+
+        saved_path = None
+
+        if was_muse_realtime:
+            saved_path = self.save_muse_raw_csv()
+
+        self.is_muse_realtime_recording = False
 
         self.btn_start.setEnabled(True)
         self.btn_stop.setEnabled(False)
-        self.lbl_status.setText("Status: Stopped")
+
+        if saved_path is not None:
+            self.lbl_status.setText(f"Status: Stopped | Raw CSV saved: {saved_path}")
+        else:
+            self.lbl_status.setText("Status: Stopped")
 
     def on_csv_finished(self):
         self.btn_start.setEnabled(True)
         self.btn_stop.setEnabled(False)
-        self.worker = None
+        self.lbl_status.setText("Status: CSV replay finished")
 
     def on_sample_received(self, af7_val, t_rel):
-        self.x_data.append(float(t_rel))
-        self.y_data.append(float(af7_val))
+        t_rel = float(t_rel)
+        af7_val = float(af7_val)
+
+        self.x_data.append(t_rel)
+        self.y_data.append(af7_val)
+
+        cutoff = t_rel - float(DISPLAY_SECONDS)
+
+        while len(self.x_data) > 0 and self.x_data[0] < cutoff:
+            self.x_data.popleft()
+            self.y_data.popleft()
+
+        if self.is_muse_realtime_recording:
+            self.realtime_raw_records.append([t_rel, af7_val])
 
     def on_status_changed(self, msg):
         self.lbl_status.setText(f"Status: {msg}")
@@ -526,6 +607,14 @@ class MainWindow(QMainWindow):
 
         self.feature_table.resizeRowsToContents()
         self.update_vmd_plots()
+    
+    def on_window_prediction_ready(self, pred, prob, status, latency, win_end_sec):
+        pred_str = format_pred(pred)
+        prob_str = "-" if prob is None else f"{prob:.4f}"
+
+        self.lbl_window_pred.setText(
+            f"Current 5s window: {pred_str} | Prob: {prob_str} | {win_end_sec:.2f} s"
+        )
 
     def on_prediction_ready(self, pred, prob, status, latency, win_end_sec):
         pred_str = format_pred(pred)
@@ -590,12 +679,14 @@ class MainWindow(QMainWindow):
         self.curve.setData(x, y_disp)
 
         x_max = x[-1]
-        x_min = max(0.0, x_max - DISPLAY_SECONDS)
+        x_min = max(0.0, x_max - float(DISPLAY_SECONDS))
+
+        if x_max <= x_min:
+            x_max = x_min + 1.0
 
         self.plot_widget.setXRange(x_min, x_max, padding=0)
 
-        mask = (x >= x_min) & (x <= x_max)
-        y_visible = y_disp[mask]
+        y_visible = y_disp
 
         if len(y_visible) > 0:
             y_min = np.min(y_visible)
@@ -606,6 +697,7 @@ class MainWindow(QMainWindow):
                 y_max += 1
 
             pad = 0.1 * (y_max - y_min)
+
             self.plot_widget.setYRange(
                 y_min - pad,
                 y_max + pad,

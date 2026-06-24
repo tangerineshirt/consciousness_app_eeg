@@ -3,7 +3,7 @@ import antropy as ant
 from scipy.stats import skew, kurtosis
 
 
-def extract_old_features(signal, sf=128):
+def extract_features(signal, sf=128):
     signal = np.asarray(signal, dtype=float).ravel()
 
     if len(signal) < sf or (not np.isfinite(np.std(signal))) or np.std(signal) < 1e-8:
@@ -40,7 +40,7 @@ def extract_features_from_modes(modes, sf=128):
     feature_dict = {}
 
     for i in range(modes.shape[0]):
-        feats = extract_old_features(modes[i], sf=sf)
+        feats = extract_features(modes[i], sf=sf)
 
         if feats is None:
             return None
