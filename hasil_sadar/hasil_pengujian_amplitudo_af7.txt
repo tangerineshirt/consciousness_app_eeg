@@ -1,0 +1,173 @@
+PENGUJIAN AMPLITUDO EEG MUSE 2 KANAL AF7
+ANALISIS WINDOW TANPA PEMISAHAN PITA
+========================================================================================
+
+METODE
+----------------------------------------------------------------------------------------
+Kolom sinyal                  : AF7
+Frekuensi sampling            : 256.000 Hz
+Filter                        : 0.5-45.0 Hz
+Orde filter                   : 4
+Durasi window                 : 5.0 detik
+Jumlah sampel per window      : 1280
+Metode amplitudo               : Peak-to-peak
+Pemisahan pita EEG             : Tidak
+Seleksi/pembuangan window      : Tidak
+
+ACUAN INTERPRETASI
+----------------------------------------------------------------------------------------
+Di bawah 15 µV                 : Di bawah rentang fisiologis umum
+15 sampai <30 µV               : Amplitudo rendah
+30 sampai 80 µV                : Rentang rata-rata
+>80 sampai 150 µV              : Amplitudo tinggi dalam rentang umum
+Di atas 150 µV                 : Di atas rentang umum
+
+RINGKASAN PER SUBJEK
+========================================================================================
+
+SUBJEK 1
+----------------------------------------------------------------------------------------
+File                         : /home/razzannr/Documents/GitHub/consciousness_app_eeg/hasil_sadar/muse_af7_anas_20260508_102840.csv
+Jumlah sampel                : 153601
+Durasi rekaman               : 600.004 detik
+Jumlah window                : 120
+
+STATISTIK AMPLITUDO WINDOW
+Minimum                      : 31.778105 µV
+Maksimum                     : 2831.005776 µV
+Mean                         : 235.069491 µV
+Median                       : 99.898669 µV
+Standar deviasi              : 356.269141 µV
+Persentil 25                 : 65.800096 µV
+Persentil 75                 : 228.023585 µV
+Interquartile range          : 162.223489 µV
+
+DISTRIBUSI KATEGORI
+Di bawah 15 µV               : 0 (0.00%)
+15 sampai <30 µV             : 0 (0.00%)
+30 sampai 80 µV              : 48 (40.00%)
+>80 sampai 150 µV            : 32 (26.67%)
+Di atas 150 µV               : 40 (33.33%)
+
+Window dalam 15-150 µV       : 80 dari 120 (66.67%)
+Window dalam 30-80 µV        : 48 dari 120 (40.00%)
+
+SUBJEK 2
+----------------------------------------------------------------------------------------
+File                         : /home/razzannr/Documents/GitHub/consciousness_app_eeg/hasil_sadar/muse_af7_sample_test_gui_02.csv
+Jumlah sampel                : 153613
+Durasi rekaman               : 600.051 detik
+Jumlah window                : 120
+
+STATISTIK AMPLITUDO WINDOW
+Minimum                      : 37.054883 µV
+Maksimum                     : 1523.360283 µV
+Mean                         : 112.789528 µV
+Median                       : 86.775162 µV
+Standar deviasi              : 163.818424 µV
+Persentil 25                 : 64.021372 µV
+Persentil 75                 : 116.996704 µV
+Interquartile range          : 52.975332 µV
+
+DISTRIBUSI KATEGORI
+Di bawah 15 µV               : 0 (0.00%)
+15 sampai <30 µV             : 0 (0.00%)
+30 sampai 80 µV              : 50 (41.67%)
+>80 sampai 150 µV            : 57 (47.50%)
+Di atas 150 µV               : 13 (10.83%)
+
+Window dalam 15-150 µV       : 107 dari 120 (89.17%)
+Window dalam 30-80 µV        : 50 dari 120 (41.67%)
+
+SUBJEK 3
+----------------------------------------------------------------------------------------
+File                         : /home/razzannr/Documents/GitHub/consciousness_app_eeg/hasil_sadar/muse_af7_zurin_20260508_104304.csv
+Jumlah sampel                : 153601
+Durasi rekaman               : 600.004 detik
+Jumlah window                : 120
+
+STATISTIK AMPLITUDO WINDOW
+Minimum                      : 50.780680 µV
+Maksimum                     : 1687.995368 µV
+Mean                         : 158.347205 µV
+Median                       : 87.144129 µV
+Standar deviasi              : 219.122372 µV
+Persentil 25                 : 64.961185 µV
+Persentil 75                 : 133.496928 µV
+Interquartile range          : 68.535742 µV
+
+DISTRIBUSI KATEGORI
+Di bawah 15 µV               : 0 (0.00%)
+15 sampai <30 µV             : 0 (0.00%)
+30 sampai 80 µV              : 51 (42.50%)
+>80 sampai 150 µV            : 45 (37.50%)
+Di atas 150 µV               : 24 (20.00%)
+
+Window dalam 15-150 µV       : 96 dari 120 (80.00%)
+Window dalam 30-80 µV        : 51 dari 120 (42.50%)
+
+SUBJEK 4
+----------------------------------------------------------------------------------------
+File                         : /home/razzannr/Documents/GitHub/consciousness_app_eeg/hasil_sadar/razzan_sadar.csv
+Jumlah sampel                : 153744
+Durasi rekaman               : 600.562 detik
+Jumlah window                : 120
+
+STATISTIK AMPLITUDO WINDOW
+Minimum                      : 35.156036 µV
+Maksimum                     : 477.711460 µV
+Mean                         : 74.675980 µV
+Median                       : 65.244176 µV
+Standar deviasi              : 46.969045 µV
+Persentil 25                 : 52.616691 µV
+Persentil 75                 : 79.784272 µV
+Interquartile range          : 27.167581 µV
+
+DISTRIBUSI KATEGORI
+Di bawah 15 µV               : 0 (0.00%)
+15 sampai <30 µV             : 0 (0.00%)
+30 sampai 80 µV              : 90 (75.00%)
+>80 sampai 150 µV            : 26 (21.67%)
+Di atas 150 µV               : 4 (3.33%)
+
+Window dalam 15-150 µV       : 116 dari 120 (96.67%)
+Window dalam 30-80 µV        : 90 dari 120 (75.00%)
+
+HASIL GABUNGAN SELURUH SUBJEK
+========================================================================================
+Jumlah subjek                 : 4
+Jumlah seluruh window         : 480
+
+STATISTIK GABUNGAN
+Minimum                       : 31.778105 µV
+Maksimum                      : 2831.005776 µV
+Mean                          : 145.220551 µV
+Median                        : 80.061370 µV
+Standar deviasi               : 233.590630 µV
+Persentil 25                  : 59.696640 µV
+Persentil 75                  : 123.331306 µV
+Interquartile range           : 63.634666 µV
+
+DISTRIBUSI GABUNGAN
+DI BAWAH 15 µV                : 0 window (0.00%)
+15-<30 µV                     : 0 window (0.00%)
+30-80 µV                      : 239 window (49.79%)
+>80-150 µV                    : 160 window (33.33%)
+DI ATAS 150 µV                : 81 window (16.88%)
+
+Total window dalam 15-150 µV  : 399 dari 480 (83.12%)
+Total window dalam 30-80 µV   : 239 dari 480 (49.79%)
+
+CATATAN INTERPRETASI
+========================================================================================
+1. Tidak ada window yang dihapus atau dipilih berdasarkan nilai amplitudonya.
+2. Rentang 15-150 µV merupakan rentang amplitudo EEG fisiologis umum yang disebut Naydenov et al. (2022).
+3. Rentang 30-80 µV dinyatakan sebagai batas rata-rata, bukan batas mutlak valid atau tidak valid.
+4. Paper tidak menjelaskan secara eksplisit apakah nilai amplitudo dihitung dengan RMS, peak, atau peak-to-peak.
+5. Peak-to-peak digunakan sebagai definisi operasional dalam pengujian ini.
+6. Hasil ini merupakan pemeriksaan kewajaran amplitudo fisiologis awal dan bukan validasi klinis Muse 2.
+
+REFERENSI
+========================================================================================
+Naydenov, C., Yordanova, A., & Mancheva, V. (2022). Methodology for EEG and Reference Values of the Software Analysis. Open Access Macedonian Journal of Medical Sciences, 10(B), 2351-2354.
+DOI: 10.3889/oamjms.2022.10751

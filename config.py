@@ -1,4 +1,4 @@
-MODEL_PATH = "/home/razzannr/Documents/GitHub/Python-notes/Skripsi/consciousness_detection/models/model_VMD_filter_normal.pkl"
+MODEL_PATH = "/home/razzannr/Documents/GitHub/consciousness_app_eeg/models/model_VMD_filter_normal.pkl"
 
 MUSE_FS = 256
 MODEL_FS = 128

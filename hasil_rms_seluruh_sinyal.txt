@@ -1,0 +1,100 @@
+HASIL ANALISIS RMS SELURUH SINYAL EEG
+MUSE 2 - KANAL AF7
+==================================================================================
+
+INFORMASI DATA
+----------------------------------------------------------------------------------
+File input                 : /home/razzannr/Documents/GitHub/consciousness_app_eeg/hasil_sadar/muse_af7_zurin_20260508_104304.csv
+Kolom EEG                  : AF7
+Jumlah sampel valid        : 153601
+Frekuensi sampling         : 256.000 Hz
+Perkiraan durasi           : 600.004 detik
+Penggunaan window          : Tidak
+Seleksi artefak            : Tidak
+Metode amplitudo           : RMS seluruh sinyal tiap pita
+
+RINGKASAN HASIL
+----------------------------------------------------------------------------------
+Pita      Frekuensi                    RMS             Acuan            Status
+----------------------------------------------------------------------------------
+Delta     0.5-4.0 Hz           25.9831 µV         20-200 µV            SESUAI
+Theta     4.0-8.0 Hz           11.1475 µV         20-100 µV      TIDAK SESUAI
+Alpha     8.0-13.0 Hz           6.7896 µV          20-60 µV      TIDAK SESUAI
+Beta      13.0-30.0 Hz          6.7212 µV           2-20 µV            SESUAI
+Gamma     30.0-64.0 Hz          5.1369 µV           5-10 µV            SESUAI
+----------------------------------------------------------------------------------
+Jumlah pita sesuai           : 3 dari 5
+Persentase kesesuaian        : 60.00%
+
+DETAIL SETIAP PITA
+==================================================================================
+
+DELTA (0.5-4.0 Hz)
+----------------------------------------------------------------------------------
+RMS seluruh sinyal         : 25.983067 µV
+Rentang acuan              : 20.00-200.00 µV
+Minimum hasil filter       : -492.466232 µV
+Maksimum hasil filter      : 481.544936 µV
+Mean hasil filter          : 0.001966 µV
+Standar deviasi            : 25.983067 µV
+Status                     : SESUAI
+Keterangan                 : RMS berada dalam rentang acuan.
+
+THETA (4.0-8.0 Hz)
+----------------------------------------------------------------------------------
+RMS seluruh sinyal         : 11.147504 µV
+Rentang acuan              : 20.00-100.00 µV
+Minimum hasil filter       : -291.361179 µV
+Maksimum hasil filter      : 261.925030 µV
+Mean hasil filter          : 0.000603 µV
+Standar deviasi            : 11.147504 µV
+Status                     : TIDAK SESUAI
+Keterangan                 : RMS berada di bawah rentang acuan.
+
+ALPHA (8.0-13.0 Hz)
+----------------------------------------------------------------------------------
+RMS seluruh sinyal         : 6.789649 µV
+Rentang acuan              : 20.00-60.00 µV
+Minimum hasil filter       : -136.031381 µV
+Maksimum hasil filter      : 141.539128 µV
+Mean hasil filter          : 0.000081 µV
+Standar deviasi            : 6.789649 µV
+Status                     : TIDAK SESUAI
+Keterangan                 : RMS berada di bawah rentang acuan.
+
+BETA (13.0-30.0 Hz)
+----------------------------------------------------------------------------------
+RMS seluruh sinyal         : 6.721156 µV
+Rentang acuan              : 2.00-20.00 µV
+Minimum hasil filter       : -204.943620 µV
+Maksimum hasil filter      : 205.102098 µV
+Mean hasil filter          : -0.000324 µV
+Standar deviasi            : 6.721156 µV
+Status                     : SESUAI
+Keterangan                 : RMS berada dalam rentang acuan.
+
+GAMMA (30.0-64.0 Hz)
+----------------------------------------------------------------------------------
+RMS seluruh sinyal         : 5.136888 µV
+Rentang acuan              : 5.00-10.00 µV
+Minimum hasil filter       : -125.917851 µV
+Maksimum hasil filter      : 125.568599 µV
+Mean hasil filter          : -0.000048 µV
+Standar deviasi            : 5.136888 µV
+Status                     : SESUAI
+Keterangan                 : RMS berada dalam rentang acuan.
+
+CATATAN INTERPRETASI
+==================================================================================
+1. Analisis menggunakan seluruh sinyal sekaligus tanpa pembagian window.
+2. Tidak ada bagian sinyal yang dihapus atau ditolak sebagai artefak.
+3. Offset DC dihilangkan sebelum filtering dengan mengurangi rata-rata sinyal.
+4. RMS dihitung pada seluruh hasil filtering untuk masing-masing pita.
+5. Rentang amplitudo merupakan acuan umum brainwave dari Idris et al. (2014), bukan rentang resmi Muse 2 atau kanal AF7.
+6. Idris et al. tidak menjelaskan secara eksplisit bahwa rentang amplitudonya dihitung menggunakan RMS.
+7. Pengujian ini mengikuti pendekatan operasional penelitian sebelumnya dan digunakan sebagai pemeriksaan kewajaran fisiologis awal.
+
+REFERENSI
+==================================================================================
+Idris, Z., et al. (2014). Principles, Anatomical Origin and Applications of Brainwaves: A Review, Our Experience and Hypothesis Related to Microgravity and the Question on Soul. Journal of Biomedical Science and Engineering, 7, 435-445.
+DOI: 10.4236/jbise.2014.78046
